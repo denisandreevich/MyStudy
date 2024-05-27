@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "94924b5c-5f02-41cb-9994-8b5d968d753f",
+		"name": "HW2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32994482"
+	},
+	"item": [
+		{
+			"name": "Star Wars API",
+			"item": [
+				{
+					"name": "Get people",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Код 200\",  () => pm.response.to.have.status(200))\r",
+									"let RBTJ = pm.response.json()\r",
+									"console.log(RBTJ)\r",
+									"pm.test(\"Last obj name\", () => pm.expect(RBTJ.results[RBTJ.results.length - 1].name).to.eql(\"Obi-Wan Kenobi\"))\r",
+									"console.log(RBTJ.results[RBTJ.results.length - 1].name)\r",
+									"pm.test(\"Last obj birth_year\", () => pm.expect(RBTJ.results[RBTJ.results.length - 1].birth_year).to.eql(\"57BBY\"))\r",
+									"console.log(RBTJ.results[RBTJ.results.length - 1].birth_year)\r",
+									"pm.environment.set(\"homeworld\", RBTJ.results[RBTJ.results.length - 1].homeworld)\r",
+									"pm.environment.set(\"url\", RBTJ.results[RBTJ.results.length - 1].url)\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get homeworld",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let RBTJ = pm.response.json()\r",
+									"console.log(RBTJ)\r",
+									"pm.test(\"homeworld name\", () => pm.expect(RBTJ.name).to.eql(\"Stewjon\"))\r",
+									"pm.test(\"homeworld url\", () => pm.expect(RBTJ.residents).to.include(pm.environment.get(\"url\")))\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{homeworld}}",
+							"host": [
+								"{{homeworld}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JSONPlaceholder API",
+			"item": [
+				{
+					"name": "Post users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"correct status code\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 203, 204]);",
+									"});",
+									"let RBTJ = pm.response.json()",
+									"console.log(RBTJ)",
+									"let RQBTJ = JSON.parse(pm.request.body)",
+									"console.log(RQBTJ)",
+									"pm.test(\"name is correct\", () => pm.expect(RBTJ.name).to.eql(RQBTJ.name))",
+									"pm.test(\"lastname is correct\", () => pm.expect(RBTJ.lastname).to.eql(RQBTJ.lastname))",
+									"pm.test(\"tel is correct\", () => pm.expect(RBTJ.tel).to.eql(RQBTJ.tel))",
+									"pm.test(\"gender is correct\", () => pm.expect(RBTJ.gender).to.eql(RQBTJ.gender))",
+									"pm.test(\"contains id\", () => pm.response.to.have.jsonBody(\"id\"))",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Denis\",\r\n    \"lastName\": \"Krutoi\",\r\n    \"birth_day\": \"0069\" ,\r\n    \"tel\": \"88005553535\",\r\n    \"gender\": \"aboba\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/users",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let RBTJ = pm.response.json();",
+									"",
+									"console.log(RBTJ[0])",
+									"pm.test('has address', () => pm.expect(RBTJ[0]).to.hasOwnProperty(\"address\"))",
+									"pm.test('has street', () => pm.expect(RBTJ[0].address).to.hasOwnProperty(\"street\"))",
+									"pm.test('has suite', () => pm.expect(RBTJ[0].address).to.hasOwnProperty(\"suite\"))",
+									"pm.test('has zipcode', () => pm.expect(RBTJ[0].address).to.hasOwnProperty(\"zipcode\"))",
+									"pm.test('correct zipcode', () => pm.expect(RBTJ[0].address.zipcode).to.eql(\"23505-1337\"))",
+									"pm.test('has geo', () => pm.expect(RBTJ[0].address).to.hasOwnProperty(\"geo\"))",
+									"pm.test('has lat', () => pm.expect(RBTJ[0].address.geo).to.hasOwnProperty(\"lat\"))",
+									"pm.test('has lng', () => pm.expect(RBTJ[0].address.geo).to.hasOwnProperty(\"lng\"))",
+									"pm.test('zero lat', () => pm.expect(RBTJ[0].address.geo.lat).to.not.eql(0))",
+									"pm.test('zero lng', () => pm.expect(RBTJ[0].address.geo.lat).to.not.eql(0))",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/users?name=Mrs. Dennis Schulist",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Mrs. Dennis Schulist"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
